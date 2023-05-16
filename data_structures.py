@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Callable
 
 @dataclass
 class Commands:
@@ -6,3 +7,4 @@ class Commands:
     description: str
     is_read: bool
     is_write: bool
+    response_mapper: Callable
