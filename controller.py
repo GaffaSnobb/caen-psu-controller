@@ -1,17 +1,6 @@
 import socket, time
 from commands import commands_0520
 
-def response_stripper(response: bytes):
-    """
-    Strip the response of the metadata and keep only the two-digit hex
-    response.
-    ```
-    >>> b'#MST:00\r'.split(b':')[-1][:-1]
-    b'00'
-    ```
-    """
-    return response.split(b':')[-1][:-1]
-
 def reboot_psu(server_ip: str) -> bytes:
     """
     Reboot command is simply this sequence of 9-bytes commands sent via
@@ -72,7 +61,13 @@ def send_command(command: str, server_ip: str, server_port: int) -> bytes:
 if __name__ == "__main__":
     server_ip = '192.168.0.222' # Caen Easy-Driver 0520 dev
     server_port = 10001
-    # reboot_psu(server_ip)
+
+    response: bytes = send_command(
+        # command = "reboot",
+        command = "MOFF",
+        server_ip = server_ip,
+        server_port = server_port
+    )
     response: bytes = send_command(
         # command = "reboot",
         # command = "MOFF",
@@ -81,4 +76,4 @@ if __name__ == "__main__":
         server_port = server_port
     )
 
-    print(response_stripper(response))
+    print(commands_0520["MST"].response_mapper(response))
