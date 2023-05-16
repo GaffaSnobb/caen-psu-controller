@@ -1,31 +1,5 @@
 import socket, time
-from dataclasses import dataclass
-from utilities import access_bit
-
-@dataclass
-class Commands:
-    # command: str
-    description: str
-    is_read: bool
-    is_write: bool
-
-commands: dict[str, Commands] = {
-    "MST": Commands(
-        description = "Read module internal status register",
-        is_read = True,
-        is_write = False,
-    ),
-    "reboot": Commands(
-        description = (
-            "Reboot module. This command is different from the other commands"
-            " as the text 'reboot' is not actually sent to the PSU, but rather"
-            " a sequence of 9-byte commands via UDP as defined in the"
-            " 'reboot_psu' function."
-        ),
-        is_read = False,
-        is_write = True,
-    ),
-}
+from commands import commands_0520
 
 def response_stripper(response: bytes):
     """
@@ -75,7 +49,7 @@ def send_command(command: str, server_ip: str, server_port: int) -> bytes:
     1: fault
     0: module on
     """
-    if command not in commands.keys():
+    if command not in commands_0520.keys():
         msg = (
             f"'{command}' is not a valid command!"
         )
