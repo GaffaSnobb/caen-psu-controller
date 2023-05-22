@@ -19,44 +19,56 @@ def reboot_psu(server_ip: str) -> bytes:
 
     return data
 
-def send_command(command: str, server_ip: str, server_port: int) -> bytes:
-    """
-    Establish a TCP connection, send a command, and return the answer
-    from a Caen Easy-Driver 0520. Maybe it works for other Caen PSUs?
-    I dont know, havent tested it!
+class CaenEasyDriverControl:
+    def __init__(self, server_ip: str, server_port: int):
+        self.server_ip = server_ip
+        self.server_port = server_port
+        self.sock = None
 
-    The status register value can be directly read by users using the
-    `MST\r` command. The returned item is a 2-digit hexadecimal ASCII
-    string, corresponding to the equivalent status register. A brief
-    description of all the binary flags is here presented:
-    7: reserved
-    6: reserved
-    5: external interlock
-    4: sunt temperature
-    3: mosfet temperature
-    2: dc undervoltage
-    1: fault
-    0: module on
-    """
-    if command not in commands_0520.keys():
-        msg = (
-            f"'{command}' is not a valid command!"
-        )
-        raise ValueError(msg)
-    
-    if command == "reboot":
+    def __enter__(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((self.server_ip, self.server_port))
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.sock is not None:
+            self.sock.close()
+
+    def send_command(self, command: str) -> bytes:
         """
-        The reboot command is different from the other commands since it
-        is sent by UDP to port 30704.
+        Send a command, and return the answer
+        from a Caen Easy-Driver 0520. Maybe it works for other Caen PSUs?
+        I dont know, havent tested it!
+
+        The status register value can be directly read by users using the
+        `MST\r` command. The returned item is a 2-digit hexadecimal ASCII
+        string, corresponding to the equivalent status register. A brief
+        description of all the binary flags is here presented:
+        7: reserved
+        6: reserved
+        5: external interlock
+        4: sunt temperature
+        3: mosfet temperature
+        2: dc undervoltage
+        1: fault
+        0: module on
         """
-        return reboot_psu(server_ip=server_ip)
-    
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((server_ip, server_port))
-        sock.sendall((command + '\r').encode())
-        response: bytes = sock.recv(4096)
-    
-    return response
+        if command not in commands_0520.keys():
+            msg = f"'{command}' is not a valid command!"
+            raise ValueError(msg)
+
+        if command == "reboot":
+            """
+            The reboot command is different from the other commands since it
+            is sent by UDP to port 30704.
+            """
+            return reboot_psu(server_ip=self.server_ip)
+
+        self.sock.sendall((command + '\r').encode())
+        response: bytes = self.sock.recv(4096)
+
+        return response
+
 
 if __name__ == "__main__":
     server_ip = '192.168.0.222' # Caen Easy-Driver 0520 dev
