@@ -1,4 +1,4 @@
-from utilities import response_stripper
+from .utilities import response_stripper
 
 def mst_mapper(response: bytes):
     """

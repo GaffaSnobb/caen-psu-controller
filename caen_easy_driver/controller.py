@@ -1,5 +1,5 @@
 import socket, time
-from commands import commands_0520
+from .commands import commands_0520
 
 def reboot_psu(server_ip: str) -> bytes:
     """

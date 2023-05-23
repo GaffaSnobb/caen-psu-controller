@@ -1,5 +1,5 @@
-from data_structures import Commands
-from mappers import mst_mapper
+from .data_structures import Commands
+from .mappers import mst_mapper
 
 no_mapper = lambda response: response
 
