@@ -8,3 +8,5 @@ class Commands:
     is_read: bool
     is_write: bool
     response_mapper: Callable
+    unit: str | None
+    allowed_values: list | None
