@@ -70,7 +70,7 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         is_read = True,
         is_write = False,
         response_mapper = no_mapper,
-        unit = None,
+        unit = "A",
         allowed_values = None,
     ),
     "MRID": Commands(
@@ -126,7 +126,7 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         is_read = True,
         is_write = False,
         response_mapper = no_mapper,
-        unit = None,
+        unit = "V",
         allowed_values = None,
     ),
     "MVER": Commands(
