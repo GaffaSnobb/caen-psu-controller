@@ -11,4 +11,5 @@ c: new feature to existing functionality
 d: bug fixes
 """
 
+from .utilities import response_stripper
 from .controller import *
