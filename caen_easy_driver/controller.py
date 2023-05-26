@@ -82,23 +82,3 @@ class CaenEasyDriverControl:
             if buffer.endswith(b"\r"): break
 
         return buffer
-
-if __name__ == "__main__":
-    ip = '192.168.0.222' # Caen Easy-Driver 0520 dev
-    port = 10001
-
-    response: bytes = send_command(
-        # command = "reboot",
-        command = "MOFF",
-        ip = ip,
-        port = port
-    )
-    response: bytes = send_command(
-        # command = "reboot",
-        # command = "MOFF",
-        command = "MST",
-        ip = ip,
-        port = port
-    )
-
-    print(commands_0520["MST"].response_mapper(response))
