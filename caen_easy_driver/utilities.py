@@ -1,6 +1,6 @@
 import numpy as np
 
-def response_stripper(response: bytes):
+def response_stripper(response: bytes) -> bytes:
     """
     Strip the response of the metadata and keep only the two-digit hex
     response.
