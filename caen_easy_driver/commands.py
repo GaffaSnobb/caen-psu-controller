@@ -1,3 +1,4 @@
+import numpy as np
 from .data_structures import Commands
 from .mappers import mst_mapper
 
@@ -69,7 +70,7 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         description = "Read output current value in amperes. Return the readback value of the power supply actual output current. Current readback values have a 20-bit resolution (19-bit + sign) and they are presented with a 5-digit precision.",
         is_read = True,
         is_write = False,
-        response_mapper = no_mapper,
+        response_mapper = float,
         unit = "A",
         allowed_values = None,
     ),
@@ -125,7 +126,7 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         description = "Read output voltage value in volts. Return the readback value of the power supply actual output voltage, measured at the EASY-DRIVER module output terminals. As for the output current, voltage readback values have a 20-bit resolution (19-bit + sign) and they are presented with a 5-digit precision",
         is_read = True,
         is_write = False,
-        response_mapper = no_mapper,
+        response_mapper = float,
         unit = "V",
         allowed_values = None,
     ),
@@ -166,7 +167,7 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         is_read = False,
         is_write = True,
         response_mapper = no_mapper,
-        unit = None,
-        allowed_values = None,
+        unit = "A",
+        allowed_values = np.arange(-5, 5 + 0.01, 0.01),
     ),
 }
