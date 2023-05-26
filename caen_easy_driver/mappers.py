@@ -1,6 +1,9 @@
 from .utilities import response_stripper
 
-def mst_mapper(response: bytes):
+def mst_mapper(
+    response: bytes,
+    verbose: bool = False
+):
     """
     TODO: Map the 2 digit hex status register response to the correct
     meaning. The bits represent the following:
@@ -15,6 +18,8 @@ def mst_mapper(response: bytes):
     """
     response = response_stripper(response=response)
     response = int(response, 16)
+    if not verbose: return response
+    
     if response & 0b00000001:
         print("The module is enabled and correctly regulating output current.")
     else:
