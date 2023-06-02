@@ -9,7 +9,7 @@ def response_stripper(response: bytes) -> bytes:
     b'00'
     ```
     """
-    return response.split(b':')[-1][:-1]
+    return response.split(b':')[-1].rstrip(b"\r")
 
 def access_bit(
     data: bytearray,
