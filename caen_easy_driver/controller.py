@@ -59,7 +59,10 @@ class CaenEasyDriverControl:
         1: fault
         0: module on
         """
-        if command not in commands_0520.keys():
+        if command.split(":")[0] not in commands_0520.keys():
+            """
+            A valid command is for example 'MST' or 'MWI:-2'.
+            """
             msg = f"'{command}' is not a valid command!"
             raise ValueError(msg)
 
