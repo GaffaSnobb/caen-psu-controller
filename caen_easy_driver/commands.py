@@ -87,8 +87,8 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         is_read = False,
         is_write = True,
         response_mapper = no_mapper,
-        unit = None,
-        allowed_values = None,
+        unit = "A",
+        allowed_values = (-5, 5),
     ),
     "MRP": Commands(
         description = "Read DC-Link voltage value",
@@ -102,8 +102,8 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         description = "Read current Slew Rate",
         is_read = True,
         is_write = False,
-        response_mapper = no_mapper,
-        unit = None,
+        response_mapper = float,
+        unit = "A/s",
         allowed_values = None,
     ),
     "MRT": Commands(
@@ -155,12 +155,12 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         allowed_values = None,
     ),
     "MWSR": Commands(
-        description = "Write current Slew Rate in amperes/second. set the value of the ramp slew rate",
+        description = "Set the current slew rate in A/s.",
         is_read = False,
         is_write = True,
         response_mapper = no_mapper,
         unit = "A/s",
-        allowed_values = range(0, 1000+1),
+        allowed_values = (0, 1000),
     ),
     "MWI": Commands(
         description = "Set output current value (no ramp)",
