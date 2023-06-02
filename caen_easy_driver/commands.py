@@ -168,6 +168,6 @@ commands_0520: dict[str, Commands] = {  # Commands for the Easy-Driver 0520.
         is_write = True,
         response_mapper = no_mapper,
         unit = "A",
-        allowed_values = np.arange(-5, 5 + 0.01, 0.01),
+        allowed_values = (-5, 5),
     ),
 }
