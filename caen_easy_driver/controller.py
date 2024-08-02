@@ -1,4 +1,4 @@
-import socket, time
+import socket, time, asyncio
 from .commands import commands_0520
 
 def reboot_psu(ip: str) -> bytes:
@@ -34,6 +34,29 @@ class CaenEasyDriverControl:
     def __exit__(self, exc_type, exc_value, traceback):
         if self.sock is not None:
             self.sock.close()
+
+    async def __aenter__(self):
+        self.reader, self.writer = await asyncio.open_connection(self.ip, self.port)
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.writer is not None:
+            self.writer.close()
+            await self.writer.wait_closed()
+
+    async def send_command_async(self, command: str) -> bytes:
+        buffer = b""
+        self.writer.write((command + '\r').encode())
+        await self.writer.drain()
+        
+        while True:
+            response = await self.reader.read(4096)
+            buffer += response
+        
+            if buffer.endswith(b"\r"):
+                break
+        
+        return buffer
 
     def send_command(self, command: str) -> bytes:
         """
